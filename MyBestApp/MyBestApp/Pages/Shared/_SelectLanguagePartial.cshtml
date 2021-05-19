@@ -1,5 +1,12 @@
-﻿<div class="language">
-    <input class="flag" type="image" src="~/images/en-US.png" />
-    <input class="flag" type="image" src="~/images/pl-PL.png" />
+﻿@{ 
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+}
+<div class="language">
+    <form asp-page="Localization" asp-route-cuture="en-US" asp-route-returnUrl="@returnUrl">
+        <input class="flag" type="image" src="~/images/en-US.png" />
+    </form>
+    <form asp-page="Localization" asp-route-cuture="pl-PL" asp-route-returnUrl="@returnUrl">
+        <input class="flag" type="image" src="~/images/pl-PL.png" />
+    </form>    
 </div>
 
