@@ -1,12 +1,15 @@
-﻿@{ 
+﻿@{
     var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+    var requestCultureCookie = Context.Request.Cookies[".AspNetCore.Culture"];
 }
 <div class="language">
-    <form asp-page="Localization" asp-route-cuture="en-US" asp-route-returnUrl="@returnUrl">
-        <input class="flag" type="image" src="~/images/en-US.png" />
-    </form>
-    <form asp-page="Localization" asp-route-cuture="pl-PL" asp-route-returnUrl="@returnUrl">
-        <input class="flag" type="image" src="~/images/pl-PL.png" />
-    </form>    
+    @foreach (var culture in SupportedCultures.CultureList)
+    {
+        var flagPath = $"./images/{culture.Name}.png";
+        var disabled = requestCultureCookie.Contains(culture.Name) ? "disabled" : "";
+        <form asp-page="Localization" asp-route-cuture="@culture.Name" asp-route-returnUrl="@returnUrl">
+            <input @disabled class="flag @disabled" type="image" src="@flagPath" alt="@culture.Name" title="@culture.NativeName" />
+        </form>
+    }
 </div>
 

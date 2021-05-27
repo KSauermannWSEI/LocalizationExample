@@ -81,3 +81,6 @@ body {
 .flag {
     width:56px;
 }
+.disabled {
+    opacity: 0.7;
+}
