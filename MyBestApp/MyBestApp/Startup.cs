@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyBestApp.Data;
 using MyBestApp.Middleware;
 using System;
 using System.Collections.Generic;
@@ -27,7 +29,11 @@ namespace MyBestApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCustomlLocalization();
+            services.AddDbContext<LocalizationContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SqlConnection")));
+            //services.AddCustomlLocalization();
+            services.AddSession();
+            services.AddDbLocalization();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +52,9 @@ namespace MyBestApp
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCutomLocalization();
+            app.UseSession();
+            //app.UseCutomLocalization();
+            app.UseDbLocalization();
 
             app.UseRouting();
 
